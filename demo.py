@@ -26,7 +26,7 @@ def scale_input(x: np.ndarray, scale: float, scale_type) -> np.ndarray:
     return x_scale
 
 
-def predict_fba_folder(model, args):
+def predict_bgr_folder(model, args):
     save_dir = args.output_dir
 
     dataset_test = PredDataset(args.image_dir, args.trimap_dir)
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # Model related arguments
     parser.add_argument('--encoder', default='resnet50_GN_WS', help="encoder model")
-    parser.add_argument('--decoder', default='fba_decoder', help="Decoder model")
-    parser.add_argument('--weights', default='FBA.pth')
+    parser.add_argument('--decoder', default='bgr_decoder', help="Decoder model")
+    parser.add_argument('--weights', default='BGR.pth')
     parser.add_argument('--image_dir', default='./examples/images', help="")
     parser.add_argument('--trimap_dir', default='./examples/trimaps', help="")
     parser.add_argument('--output_dir', default='./examples/predictions', help="")
@@ -94,4 +94,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     model = build_model(args)
     model.eval()
-    predict_fba_folder(model, args)
+    predict_bgr_folder(model, args)
