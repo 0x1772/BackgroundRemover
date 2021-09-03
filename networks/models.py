@@ -72,9 +72,9 @@ class ModelBuilder():
             net_encoder.load_state_dict(net_encoder_sd)
         return net_encoder
 
-    def build_decoder(self, arch='fba_decoder', batch_norm=False):
-        if arch == 'fba_decoder':
-            net_decoder = fba_decoder(batch_norm=batch_norm)
+    def build_decoder(self, arch='bgr_decoder', batch_norm=False):
+        if arch == 'bgr_decoder':
+            net_decoder = bgr_decoder(batch_norm=batch_norm)
 
         return net_decoder
 
@@ -253,7 +253,7 @@ def norm(dim, bn=False):
         return nn.BatchNorm2d(dim)
 
 
-def fba_fusion(alpha, img, F, B):
+def bgr_fusion(alpha, img, F, B):
     F = ((alpha * img + (1 - alpha**2) * F - alpha * (1 - alpha) * B))
     B = ((1 - alpha) * img + (2 * alpha - alpha**2) * B - alpha * (1 - alpha) * F)
 
@@ -265,9 +265,9 @@ def fba_fusion(alpha, img, F, B):
     return alpha, F, B
 
 
-class fba_decoder(nn.Module):
+class bgr_decoder(nn.Module):
     def __init__(self, batch_norm=False):
-        super(fba_decoder, self).__init__()
+        super(bgr_decoder, self).__init__()
         pool_scales = (1, 2, 3, 6)
         self.batch_norm = batch_norm
 
@@ -355,8 +355,8 @@ class fba_decoder(nn.Module):
         F = torch.sigmoid(output[:, 1:4])
         B = torch.sigmoid(output[:, 4:7])
 
-        # FBA Fusion
-        alpha, F, B = fba_fusion(alpha, img, F, B)
+        # BGR Fusion
+        alpha, F, B = bgr_fusion(alpha, img, F, B)
 
         output = torch.cat((alpha, F, B), 1)
 
