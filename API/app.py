@@ -18,8 +18,8 @@ def get_array(arg):
 class Matting_Args:
     def __init__(self):
         self.encoder = 'resnet50_GN_WS'
-        self.decoder = 'fba_decoder'
-        self.weights = '../models/FBA.pth'
+        self.decoder = 'bgr_decoder'
+        self.weights = '../models/BGR.pth'
         
 args = Matting_Args()
 
